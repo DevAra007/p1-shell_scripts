@@ -1,0 +1,18 @@
+#!/bin/bash
+
+#remotehosts contains host name and ssh key dir
+
+for host in `cat remotehosts`
+do 
+    echo
+	echo "##############################"
+	echo "Connecting to $host"
+	echo "##############################"
+	echo "Pushing script to host"
+	scp multios_websetup $host:/tmp/ > /dev/null
+	echo "Excecuting Script on Host"
+	ssh $host sudo /tmp/multios_websetup
+	ssh $host sudo rm -rf /tmp/multios_websetup
+	echo "###############################"
+	echo
+done 

@@ -1,0 +1,18 @@
+Host web01
+    Hostname web01
+    User devara
+
+Host web02
+    Hostname web02
+    User devara
+    IdentityFile <keypath>
+
+Host web03
+    Hostname web03
+    User devara
+    IdentityFile <keypath>
+
+Host web04
+    Hostname web04
+    User devara
+    IdentityFile <keypath>

@@ -1,0 +1,95 @@
+#!/bin/bash
+
+# script creates a webserver with a website on multiple ec2 linux instance
+
+#declare var
+URL='https://www.tooplate.com/zip-templates/2119_gymso_fitness.zip'
+TEMPLATE='2119_gymso_fitness'
+TEMPDIR=/tmp/webfiles
+
+yum --help &> /dev/null
+
+#if statment to check os
+
+if [ $? -eq 0 ]
+then 
+    #set var
+	PACKAGE="httpd wget unzip"
+	SVC="httpd"
+	
+	#installing packages
+	echo "#########################"
+	echo "Installing Packages"
+	sudo yum install $PACKAGE -y > /dev/null
+	echo
+	
+	#start SVC
+	echo "#############################"
+	echo "Start & Enable HTTPD Service"
+	echo "#############################"
+	sudo systemctl start $SVC
+	sudo systemctl enable $SVC
+	echo
+	
+	#create Temp Directory "webfiles"
+	echo "###############################"
+	echo "Creating tmp dir, getting and extracting webfiles"
+	mkdir -p $TEMPDIR
+	cd $TEMPDIR
+	
+	#get web template and extract 
+	wget $URL > /dev/null
+	unzip $TEMPLATE.zip >/dev/null
+	sudo cp -r $TEMPLATE/* /var/www/html 
+	echo
+	sudo systemctl restart $SVC
+	
+	#Clean
+	echo "#################################"
+	echo "Removing Temporary Files"
+	echo "################################"
+	rm -rf $TEMPDIR
+	
+else
+	#set var
+	PACKAGE="apache2 wget unzip"
+	SVC="apache2"
+	
+	#installing packages
+	echo "#########################"
+	echo "Installing Packages"
+	sudo apt update > /dev/null
+	sudo apt install $PACKAGE -y > /dev/null
+	echo
+
+	
+	#create Temp Directory "webfiles"
+	echo "###############################"
+	echo "Creating tmp dir, getting and extracting webfiles"
+	mkdir -p $TEMPDIR
+	cd $TEMPDIR
+	
+	#get web template and extract 
+	wget $URL > /dev/null
+	unzip $TEMPLATE.zip >/dev/null
+	sudo cp -r $TEMPLATE/* /var/www/html 
+	echo
+	sudo systemctl restart $SVC
+	
+	#Clean
+	echo "#################################"
+	echo "Removing Temporary Files"
+	echo "################################"
+	rm -rf $TEMPDIR
+	
+fi
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
